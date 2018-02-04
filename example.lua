@@ -9,6 +9,8 @@ r.init(jua)
 w.init(jua)
 k.init(jua, json, w, r)
 
+local ws
+
 local function prints(...)
   local objs = {...}
   for i, obj in ipairs(objs) do

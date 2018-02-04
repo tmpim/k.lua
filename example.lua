@@ -2,7 +2,9 @@ local w = require("w")
 local r = require("r")
 local k = require("k")
 local jua = require("jua")
-local json = require("json")
+os.loadAPI("json")
+local json = _G.json
+_G.json = nil
 local await = jua.await
 
 r.init(jua)

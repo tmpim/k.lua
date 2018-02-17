@@ -8,7 +8,20 @@ local endpoint = "krist.ceriat.net"
 local wsEndpoint = "ws://"..endpoint
 local httpEndpoint = "http://"..endpoint
 
+local function asserttype(var, name, vartype, optional)
+  if not optional then
+    assert(type(var) == vartype, name..": expected "..vartype.." got "..type(var))
+  else
+    assert(type(var) == vartype or type(var) == "nil", name..": expected "..vartype.." got "..type(var))
+  end
+end
+
 function init(juai, jsoni, wi, ri)
+  asserttype(juai, "jua", "table")
+  asserttype(jsoni, "json", "table")
+  asserttype(wi, "w", "table", true)
+  asserttype(ri, "r", "table")
+
   jua = juai
   await = juai.await
   json = jsoni
@@ -38,6 +51,9 @@ local function api_request(cb, api, data)
 end
 
 local function authorize_websocket(cb, privatekey)
+  asserttype(cb, "callback", "function")
+  asserttype(privatekey, "privatekey", "string")
+
   api_request(function(success, data)
     cb(success, data and data.url:gsub("wss:", "ws:"))
   end, "/ws/start", {
@@ -46,6 +62,9 @@ local function authorize_websocket(cb, privatekey)
 end
 
 function address(cb, address)
+  asserttype(cb, "callback", "function")
+  asserttype(address, "address", "string")
+
   api_request(function(success, data)
     data.address.address = address
     cb(success, data.address)
@@ -53,48 +72,81 @@ function address(cb, address)
 end
 
 function addressTransactions(cb, address, limit, offset)
+  asserttype(cb, "callback", "function")
+  asserttype(address, "address", "string")
+  asserttype(limit, "limit", "number", true)
+  asserttype(offset, "offset", "number", true)
+
   api_request(function(success, data)
     cb(success, data.transactions)
   end, "/addresses/"..address.."/transactions?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
 function addressNames(cb, address)
+  asserttype(cb, "callback", "function")
+  asserttype(address, "address", "string")
+
   api_request(function(success, data)
     cb(success, data.names)
   end, "/addresses/"..address.."/names")
 end
 
 function addresses(cb, limit, offset)
+  asserttype(cb, "callback", "function")
+  asserttype(limit, "limit", "number", true)
+  asserttype(offset, "offset", "number", true)
+
   api_request(function(success, data)
     cb(success, data.addresses)
   end, "/addresses?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
 function rich(cb, limit, offset)
+  asserttype(cb, "callback", "function")
+  asserttype(limit, "limit", "number", true)
+  asserttype(offset, "offset", "number", true)
+
   api_request(function(success, data)
     cb(success, data.addresses)
   end, "/addresses/rich?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
 function transactions(cb, limit, offset)
+  asserttype(cb, "callback", "function")
+  asserttype(limit, "limit", "number", true)
+  asserttype(offset, "offset", "number", true)
+
   api_request(function(success, data)
     cb(success, data.transactions)
   end, "/transactions?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
 function latestTransactions(cb, limit, offset)
+  asserttype(cb, "callback", "function")
+  asserttype(limit, "limit", "number", true)
+  asserttype(offset, "offset", "number", true)
+
   api_request(function(success, data)
     cb(success, data.transactions)
   end, "/transactions/latest?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
 function transaction(cb, txid)
+  asserttype(cb, "callback", "function")
+  asserttype(txid, "txid", "number")
+
   api_request(function(success, data)
     cb(success, data.transaction)
   end, "/transactions/"..txid)
 end
 
 function makeTransaction(cb, privatekey, to, amount, metadata)
+  asserttype(cb, "callback", "function")
+  asserttype(privatekey, "privatekey", "string")
+  asserttype(to, "to", "string")
+  asserttype(amount, "amount", "number")
+  asserttype(metadata, "metadata", "string", true)
+
   api_request(function(success, data)
     cb(success, data.transaction)
   end, "/transactions", {
@@ -251,6 +303,9 @@ local function mixinHandle(id, handle)
 end
 
 function connect(cb, privatekey, preconnect)
+  asserttype(cb, "callback", "function")
+  asserttype(privatekey, "privatekey", "string", true)
+  asserttype(preconnect, "preconnect", "function", true)
   local url
   if privatekey then
     local success, auth = await(authorize_websocket, privatekey)
@@ -271,6 +326,7 @@ function connect(cb, privatekey, preconnect)
 end
 
 function parseMeta(meta)
+  asserttype(meta, "meta", "string")
   return {
     name = meta:match("([%l%d]+)@"),
     domain = meta:match("@?([%l%d]+).kst"),

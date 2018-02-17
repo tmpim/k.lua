@@ -281,6 +281,14 @@ end
 return {
   init = init,
   address = address,
+  addressTransactions = addressTransactions,
+  addressNames = addressNames,
+  addresses = addresses,
+  rich = rich,
+  transactions = transactions,
+  latestTransactions = latestTransactions,
+  transaction = transaction,
+  makeTransaction = makeTransaction,
   connect = connect,
   parseMeta = parseMeta
 }

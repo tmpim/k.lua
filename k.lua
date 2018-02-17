@@ -52,6 +52,59 @@ function address(cb, address)
   end, "/addresses/"..address)
 end
 
+function addressTransactions(cb, address, limit, offset)
+  api_request(function(success, data)
+    cb(success, data.transactions)
+  end, "/addresses/"..address.."/transactions?limit="..(limit or 50).."&offset="..(offset or 0))
+end
+
+function addressNames(cb, address)
+  api_request(function(success, data)
+    cb(success, data.names)
+  end, "/addresses/"..address.."/names")
+end
+
+function addresses(cb, limit, offset)
+  api_request(function(success, data)
+    cb(success, data.addresses)
+  end, "/addresses?limit="..(limit or 50).."&offset="..(offset or 0))
+end
+
+function rich(cb, limit, offset)
+  api_request(function(success, data)
+    cb(success, data.addresses)
+  end, "/addresses/rich?limit="..(limit or 50).."&offset="..(offset or 0))
+end
+
+function transactions(cb, limit, offset)
+  api_request(function(success, data)
+    cb(success, data.transactions)
+  end, "/transactions?limit="..(limit or 50).."&offset="..(offset or 0))
+end
+
+function latestTransactions(cb, limit, offset)
+  api_request(function(success, data)
+    cb(success, data.transactions)
+  end, "/transactions/latest?limit="..(limit or 50).."&offset="..(offset or 0))
+end
+
+function transaction(cb, txid)
+  api_request(function(success, data)
+    cb(success, data.transaction)
+  end, "/transactions/"..txid)
+end
+
+function makeTransaction(cb, privatekey, to, amount, metadata)
+  api_request(function(success, data)
+    cb(success, data.transaction)
+  end, "/transactions", {
+    privatekey = privatekey,
+    to = to,
+    amount = amount,
+    metadata = metadata
+  })
+end
+
 local wsEventNameLookup = {
   blocks = "block",
   ownBlocks = "block",

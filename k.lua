@@ -9,10 +9,8 @@ local wsEndpoint = "ws://"..endpoint
 local httpEndpoint = "http://"..endpoint
 
 local function asserttype(var, name, vartype, optional)
-  if not optional then
-    assert(type(var) == vartype, name..": expected "..vartype.." got "..type(var))
-  else
-    assert(type(var) == vartype or type(var) == "nil", name..": expected "..vartype.." got "..type(var))
+  if not (type(var) == vartype or optional and type(var) == "nil") then
+    error(name..": expected "..vartype.." got "..type(var), 3)
   end
 end
 

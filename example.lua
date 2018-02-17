@@ -47,9 +47,11 @@ jua.go(function()
       print("MOTD: "..data.motd)
       local success = await(ws.subscribe, "transactions", function(data)
         local tx = data.transaction
-        local meta = k.parseMeta(tx.metadata)
+        if tx.metadata then
+          local meta = k.parseMeta(tx.metadata)
+          printMeta(meta)
+        end
         prints(tx)
-        printMeta(meta)
       end)
       if success then
         print("Subscribed successfully.")

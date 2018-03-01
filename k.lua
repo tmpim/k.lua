@@ -323,13 +323,37 @@ function connect(cb, privatekey, preconnect)
   end)
 end
 
+local domainMatch = "^([%l%d-]*)@?([%l%d-]+).kst$"
+local commonMetaMatch = "^(.+)=(.+)$"
+
 function parseMeta(meta)
   asserttype(meta, "meta", "string")
-  return {
-    name = meta:match("([%l%d]+)@"),
-    domain = meta:match("@?([%l%d]+).kst"),
-    message = meta:match(";([%w%d%p ]+)")
-  }
+  local tbl = {meta={}}
+
+  for m in meta:gmatch("[^;]+") do
+    if m:match(domainMatch) then
+      -- print("Matched domain")
+
+      local p1, p2 = m:match("([%l%d-]*)@"), m:match("@?([%l%d-]+).kst")
+      tbl.name = p1
+      tbl.domain = p2
+
+    elseif m:match(commonMetaMatch) then
+      -- print("Matched common meta")
+
+      local p1, p2 = m:match(commonMetaMatch)
+
+      tbl.meta[p1] = p2
+
+    else
+      -- print("Unmatched standard meta")
+
+      table.insert(tbl.meta, m)
+    end
+    -- print(m)
+  end
+  -- print(textutils.serialize(tbl))
+  return tbl
 end
 
 local g = string.gsub

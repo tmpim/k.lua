@@ -1,7 +1,7 @@
 local w = require("w")
 local r = require("r")
 local k = require("k")
-local jua
+local jua = require("jua")
 os.loadAPI(fs.exists("json.lua") and "json.lua" or "json")
 local json = _G.json
 _G.json = nil

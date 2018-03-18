@@ -50,7 +50,7 @@ end
 
 local function authorize_websocket(cb, privatekey)
   asserttype(cb, "callback", "function")
-  asserttype(privatekey, "privatekey", "string")
+  asserttype(privatekey, "privatekey", "string", true)
 
   api_request(function(success, data)
     cb(success, data and data.url:gsub("wss:", "ws:"))
@@ -308,8 +308,6 @@ function connect(cb, privatekey, preconnect)
   if privatekey then
     local success, auth = await(authorize_websocket, privatekey)
     url = success and auth or wsEndpoint
-  else
-    url = wsEndpoint
   end
   local id = w.open(wsEvents, url)
   if preconnect then

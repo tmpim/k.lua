@@ -321,7 +321,7 @@ function connect(cb, privatekey, preconnect)
   end)
 end
 
-local domainMatch = "^([%l%d-]*)@?([%l%d-]+).kst$"
+local domainMatch = "^([%l%d-_]*)@?([%l%d-]+).kst$"
 local commonMetaMatch = "^(.+)=(.+)$"
 
 function parseMeta(meta)

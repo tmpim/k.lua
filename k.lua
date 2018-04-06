@@ -323,7 +323,7 @@ function connect(cb, privatekey, preconnect)
   end)
 end
 
-local domainMatch = "^([%l%d-]*)@?([%l%d-]+).kst$"
+local domainMatch = "^([%l%d-_]*)@?([%l%d-]+).kst$"
 local commonMetaMatch = "^(.+)=(.+)$"
 
 function parseMeta(meta)
@@ -334,7 +334,7 @@ function parseMeta(meta)
     if m:match(domainMatch) then
       -- print("Matched domain")
 
-      local p1, p2 = m:match("([%l%d-]*)@"), m:match("@?([%l%d-]+).kst")
+      local p1, p2 = m:match("([%l%d-_]*)@"), m:match("@?([%l%d-]+).kst")
       tbl.name = p1
       tbl.domain = p2
 

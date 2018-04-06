@@ -38,6 +38,7 @@ jua.go(function()
     prints(address)
   else
     print("Failed to request address.")
+    prints(address)
     jua.stop()
   end
   local success, ws = await(k.connect, "test") --a

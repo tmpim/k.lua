@@ -101,6 +101,15 @@ function addresses(cb, limit, offset)
   end, "/addresses?limit="..(limit or 50).."&offset="..(offset or 0))
 end
 
+function name(cb, name)
+  asserttype(cb, "callback", "function")
+  asserttype(name, "name", "string")
+
+  api_request(function(success, data)
+    cb(success and data and data.ok, data.name or data)
+  end, "/names/"..name)
+end
+
 function rich(cb, limit, offset)
   asserttype(cb, "callback", "function")
   asserttype(limit, "limit", "number", true)
@@ -399,6 +408,7 @@ return {
   addressTransactions = addressTransactions,
   addressNames = addressNames,
   addresses = addresses,
+  name = name,
   rich = rich,
   transactions = transactions,
   latestTransactions = latestTransactions,

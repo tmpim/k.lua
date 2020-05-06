@@ -175,7 +175,7 @@ local wsEventNameLookup = {
   ownNames = "name",
   ownWebhooks = "webhook",
   motd = "motd",
-  keepalive = "keepalive",
+  keepalive = "keepalive"
 }
 
 local wsEvents = {}

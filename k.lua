@@ -16,6 +16,8 @@ end
 
 function setNodeUrl(url)
   endpoint = url
+  wsEndpoint = "wss://"..endpoint
+  httpEndpoint = "https://"..endpoint
 end
 
 function init(juai, jsoni, wi, ri)

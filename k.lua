@@ -14,6 +14,10 @@ local function asserttype(var, name, vartype, optional)
   end
 end
 
+function setNodeUrl(url)
+  endpoint = url
+end
+
 function init(juai, jsoni, wi, ri)
   asserttype(juai, "jua", "table")
   asserttype(jsoni, "json", "table")
@@ -404,6 +408,7 @@ function toKristWalletFormat(passphrase)
 end
 
 return {
+  setNodeUrl = setNodeUrl,
   init = init,
   address = address,
   addressTransactions = addressTransactions,
